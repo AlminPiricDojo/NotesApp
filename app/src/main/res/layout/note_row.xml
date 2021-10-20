@@ -17,4 +17,16 @@
         android:textSize="16sp"
         android:text="TextView" />
 
+    <ImageButton
+        android:id="@+id/ibEditNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/edit_icon" />
+
+    <ImageButton
+        android:id="@+id/ibDeleteNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/delete_icon" />
+
 </LinearLayout>

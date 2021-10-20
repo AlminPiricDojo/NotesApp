@@ -1,5 +1,6 @@
 package com.example.notesapp.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,13 @@ class NoteAdapter(
 
         holder.itemView.apply {
             tvNote.text = item.noteText
+            if(position%2==0){llNoteHolder.setBackgroundColor(Color.GRAY)}
+            ibEditNote.setOnClickListener {
+                activity.raiseDialog(item.id)
+            }
+            ibDeleteNote.setOnClickListener {
+                activity.deleteNote(item.id)
+            }
         }
     }
 
