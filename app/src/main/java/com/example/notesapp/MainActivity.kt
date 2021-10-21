@@ -71,7 +71,6 @@ class MainActivity : AppCompatActivity() {
                 notes = data
                 updateRV()
             }else{
-//                Toast.makeText(this@MainActivity, "Unable to get data", Toast.LENGTH_LONG).show()
                 Log.e("MainActivity", "Unable to get data", )
             }
         }
