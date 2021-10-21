@@ -2,34 +2,28 @@ package com.example.notesapp.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.MainActivity
-import com.example.notesapp.R
-import com.example.notesapp.database.NoteModel
-import kotlinx.android.synthetic.main.note_row.view.*
+import com.example.notesapp.data.Note
+import com.example.notesapp.databinding.NoteRowBinding
 
 class NoteAdapter(
     private val activity: MainActivity,
-    private val items: ArrayList<NoteModel>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
+    private val items: List<Note>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class ItemViewHolder(val binding: NoteRowBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.ItemViewHolder {
         return ItemViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.note_row,
-                parent,
-                false
-            )
+            NoteRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: NoteAdapter.ItemViewHolder, position: Int) {
         val item = items[position]
 
-        holder.itemView.apply {
+        holder.binding.apply {
             tvNote.text = item.noteText
             if(position%2==0){llNoteHolder.setBackgroundColor(Color.GRAY)}
             ibEditNote.setOnClickListener {
