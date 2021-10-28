@@ -1,5 +1,6 @@
 package com.example.notesapp.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
@@ -9,7 +10,7 @@ interface NoteDao {
     suspend fun addNote(note: Note)
 
     @Query("SELECT * FROM NotesTable ORDER BY id ASC")
-    fun getNotes(): List<Note>
+    fun getNotes(): LiveData<List<Note>>
 
     @Update
     suspend fun updateNote(note: Note)
