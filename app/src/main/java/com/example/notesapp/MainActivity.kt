@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.adapters.NoteAdapter
+import com.example.notesapp.data.Note
 
 class MainActivity : AppCompatActivity() {
     private lateinit var rvNotes: RecyclerView
@@ -18,10 +19,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var submitBtn: Button
 
     lateinit var mainViewModel: MainViewModel
+    lateinit var notes: ArrayList<Note>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        notes = arrayListOf()
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mainViewModel.getNotes().observe(this, {
@@ -31,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         editText = findViewById(R.id.tvNewNote)
         submitBtn = findViewById(R.id.btSubmit)
         submitBtn.setOnClickListener {
-            mainViewModel.addNote(editText.text.toString())
+            mainViewModel.addNote(Note("", editText.text.toString()))
             editText.text.clear()
             editText.clearFocus()
         }
@@ -40,9 +44,11 @@ class MainActivity : AppCompatActivity() {
         rvAdapter = NoteAdapter(this)
         rvNotes.adapter = rvAdapter
         rvNotes.layoutManager = LinearLayoutManager(this)
+
+        mainViewModel.getData()
     }
 
-    fun raiseDialog(id: Int){
+    fun raiseDialog(id: String){
         val dialogBuilder = AlertDialog.Builder(this)
         val updatedNote = EditText(this)
         updatedNote.hint = "Enter new text"
