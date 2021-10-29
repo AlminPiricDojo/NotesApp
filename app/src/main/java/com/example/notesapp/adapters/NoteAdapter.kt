@@ -2,12 +2,14 @@ package com.example.notesapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.notesapp.MainActivity
+import com.example.notesapp.ListFragment
+import com.example.notesapp.R
 import com.example.notesapp.data.Note
 import com.example.notesapp.databinding.NoteRowBinding
 
-class NoteAdapter(private val activity: MainActivity): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
+class NoteAdapter(private val listFragment: ListFragment): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
     private var notes = emptyList<Note>()
 
     class ItemViewHolder(val binding: NoteRowBinding): RecyclerView.ViewHolder(binding.root)
@@ -24,10 +26,20 @@ class NoteAdapter(private val activity: MainActivity): RecyclerView.Adapter<Note
         holder.binding.apply {
             tvNote.text = note.noteText
             ibEditNote.setOnClickListener {
-                activity.raiseDialog(note.id)
+                /**
+                 * We will use Shared Preferences here to pass the NoteId from our NoteAdapter to the Update Fragment
+                 * There is a much cleaner way of doing this, but we will leave that up to you
+                 * Hint: look into 'navArgs'
+                 * Another option is 'Shared ViewModel'
+                 */
+                with(listFragment.sharedPreferences.edit()) {
+                    putString("NoteId", note.id)
+                    apply()
+                }
+                listFragment.findNavController().navigate(R.id.action_list_to_update)
             }
             ibDeleteNote.setOnClickListener {
-                activity.mainViewModel.deleteNote(note.id)
+                listFragment.listViewModel.deleteNote(note.id)
             }
         }
     }
@@ -35,7 +47,6 @@ class NoteAdapter(private val activity: MainActivity): RecyclerView.Adapter<Note
     override fun getItemCount() = notes.size
 
     fun update(notes: List<Note>){
-        println("UPDATING DATA")
         this.notes = notes
         notifyDataSetChanged()
     }
