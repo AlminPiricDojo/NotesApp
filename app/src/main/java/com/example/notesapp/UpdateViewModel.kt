@@ -20,8 +20,6 @@ class UpdateViewModel(application: Application): AndroidViewModel(application) {
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        println("DB: ${document.id}")
-                        println("LOCAL: $noteID")
                         if(document.id == noteID){
                             db.collection("notes").document(noteID).update("noteText", noteText)
                             break

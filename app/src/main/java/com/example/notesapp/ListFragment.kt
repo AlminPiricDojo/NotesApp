@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.adapters.NoteAdapter
 import com.example.notesapp.data.Note
+import kotlinx.coroutines.*
 
 class ListFragment : Fragment() {
     private lateinit var rvNotes: RecyclerView
@@ -22,7 +23,7 @@ class ListFragment : Fragment() {
     private lateinit var submitBtn: Button
 
     lateinit var listViewModel: ListViewModel
-    private lateinit var notes: ArrayList<Note>
+    private lateinit var notes: List<Note>
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -60,5 +61,14 @@ class ListFragment : Fragment() {
         listViewModel.getData()
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // We call the 'getData' function from our ViewModel after a one second delay because Firestore takes some time
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(1000)
+            listViewModel.getData()
+        }
     }
 }
