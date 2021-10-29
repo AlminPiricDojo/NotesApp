@@ -9,15 +9,14 @@ import com.example.notesapp.data.Note
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+
+class ListViewModel(application: Application): AndroidViewModel(application) {
     private val notes: MutableLiveData<List<Note>> = MutableLiveData()
     private var db: FirebaseFirestore = Firebase.firestore
 
-    fun getNotes(): LiveData<List<Note>>{
+    fun getNotes(): LiveData<List<Note>> {
         return notes
     }
 
@@ -46,34 +45,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun editNote(noteID: String, noteText: String){
-        CoroutineScope(Dispatchers.IO).launch {
-            db.collection("notes")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        println("DB: ${document.id}")
-                        println("LOCAL: $noteID")
-                        if(document.id == noteID){
-                            db.collection("notes").document(noteID).update("noteText", noteText)
-                        }
-                    }
-                    getData()
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("MainActivity", "Error getting documents.", exception)
-                }
-        }
-    }
-
     fun deleteNote(noteID: String){
         CoroutineScope(Dispatchers.IO).launch {
             db.collection("notes")
                 .get()
                 .addOnSuccessListener { result ->
                     for (document in result) {
-                        println("DB: ${document.id}")
-                        println("LOCAL: $noteID")
                         if(document.id == noteID){
                             db.collection("notes").document(noteID).delete()
                         }

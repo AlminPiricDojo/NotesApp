@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NotesApp</string>
+    <string name="preference_file_key">com.example.notesapp.PREFERENCE_FILE_KEY</string>
 </resources>
